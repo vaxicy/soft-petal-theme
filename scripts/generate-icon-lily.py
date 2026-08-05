@@ -391,6 +391,12 @@ def main():
     grid.save(grid_path)
     print(f"Saved {grid_path}")
 
+    # F (AI lily) is the chosen official icon
+    ai_icon = option_ai_lily()
+    theme_icon = os.path.join(here, "..", "store-assets", "icon.png")
+    ai_icon.save(theme_icon, "PNG")
+    print(f"Published F as {theme_icon}")
+
 
 if __name__ == "__main__":
     main()

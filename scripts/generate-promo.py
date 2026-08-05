@@ -19,6 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(ROOT, "..", "store-assets", "promo")
+ICON_PATH = os.path.join(ROOT, "..", "store-assets", "icon.png")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # Soft Petal palette
@@ -77,6 +78,15 @@ def _draw_flower(d, cx, cy, r):
     d.ellipse([cx - r * 0.26, cy - r * 0.26, cx + r * 0.26, cy + r * 0.26], fill=PETAL_SOFT)
 
 
+def _paste_logo(img, cx, cy, size):
+    """Paste the theme icon onto the promo canvas, centered at (cx, cy)."""
+    logo = Image.open(ICON_PATH).convert("RGBA")
+    logo = logo.resize((size, size), Image.Resampling.LANCZOS)
+    x = cx - size // 2
+    y = cy - size // 2
+    img.paste(logo, (x, y), logo)
+
+
 def _text_size(d, text, font):
     bbox = d.textbbox((0, 0), text, font=font)
     return bbox[2] - bbox[0], bbox[3] - bbox[1]
@@ -90,8 +100,8 @@ def generate_440x280():
     # Decorative blush frame band at top
     d.rectangle([0, 0, w, 8], fill=BLUSH)
 
-    # Flower decoration, right side
-    _draw_flower(d, w - 90, h // 2 - 10, 38)
+    # Logo decoration, upper-right
+    _paste_logo(img, w - 70, 90, 70)
 
     # Title
     title_font = _get_font(38, bold=True)
@@ -101,17 +111,17 @@ def generate_440x280():
     title_y = 70
     d.text((title_x, title_y), title, font=title_font, fill=TEXT)
 
-    # Subtitle, gap >= 8 px below title
+    # Subtitle, increased gap below title
     sub_font = _get_font(17)
     sub = "A calm Chrome theme"
     _, sh = _text_size(d, sub, sub_font)
-    sub_y = title_y + th + 12
+    sub_y = title_y + th + 18
     d.text((title_x, sub_y), sub, font=sub_font, fill=TEXT_LIGHT)
 
     # Feature chips
     chip_font = _get_font(12)
     chips = ["No wallpaper", "Pure color", "Soft & clean"]
-    chip_y = sub_y + sh + 22
+    chip_y = sub_y + sh + 20
     chip_x = title_x
     chip_h = 24
     for chip in chips:
@@ -167,21 +177,21 @@ def generate_1400x560():
     img = Image.new("RGB", (w, h), CREAM)
     d = ImageDraw.Draw(img)
 
-    # Large soft flower on the far left as decoration
-    _draw_flower(d, 130, h // 2 + 30, 90)
+    # Logo on the far left as decoration
+    _paste_logo(img, 200, h // 2 + 10, 200)
 
     # Text block: left-center
     title_font = _get_font(74, bold=True)
     title = "Soft Petal"
     tw, th = _text_size(d, title, title_font)
-    title_x = 300
-    title_y = 140
+    title_x = 420
+    title_y = 130
     d.text((title_x, title_y), title, font=title_font, fill=TEXT)
 
     sub_font = _get_font(30)
     sub = "A calm and elegant Chrome theme"
     _, sh = _text_size(d, sub, sub_font)
-    sub_y = title_y + th + 16
+    sub_y = title_y + th + 28
     d.text((title_x, sub_y), sub, font=sub_font, fill=TEXT_LIGHT)
 
     # Feature bullets
