@@ -177,6 +177,9 @@ def generate_1400x560():
     img = Image.new("RGB", (w, h), CREAM)
     d = ImageDraw.Draw(img)
 
+    # Large lily logo decoration on the left
+    _paste_logo(img, 170, h // 2 + 10, 160)
+
     # Text block: left-center
     title_font = _get_font(74, bold=True)
     title = "Soft Petal"
