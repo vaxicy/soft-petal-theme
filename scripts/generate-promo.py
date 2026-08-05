@@ -100,8 +100,8 @@ def generate_440x280():
     # Decorative blush frame band at top
     d.rectangle([0, 0, w, 8], fill=BLUSH)
 
-    # Logo decoration, upper-right
-    _paste_logo(img, w - 70, 90, 70)
+    # Logo decoration, right side vertically centered
+    _paste_logo(img, w - 70, h // 2, 70)
 
     # Title
     title_font = _get_font(38, bold=True)
