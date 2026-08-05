@@ -177,14 +177,11 @@ def generate_1400x560():
     img = Image.new("RGB", (w, h), CREAM)
     d = ImageDraw.Draw(img)
 
-    # Logo on the far left as decoration
-    _paste_logo(img, 200, h // 2 + 10, 200)
-
     # Text block: left-center
     title_font = _get_font(74, bold=True)
     title = "Soft Petal"
     tw, th = _text_size(d, title, title_font)
-    title_x = 420
+    title_x = 380
     title_y = 130
     d.text((title_x, title_y), title, font=title_font, fill=TEXT)
 
@@ -220,7 +217,7 @@ def generate_1400x560():
     d.text((btn_x + (btn_w - cw) // 2, btn_y + (btn_h - ch) // 2 - 1), cta, font=cta_font, fill=(255, 255, 255))
 
     # Browser mockup on the right
-    _draw_browser_mock(d, w - 560, 110, 480, 340)
+    _draw_browser_mock(d, w - 500, 110, 480, 340)
 
     # Safety checks
     assert btn_y + btn_h < h - 12, "CTA bottom overflow on 1400x560"
