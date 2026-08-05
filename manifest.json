@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "name": "Soft Petal Theme",
+  "description": "A gentle and elegant Chrome theme with soft petals, warm paper texture, and calm natural light.",
+  "theme": {
+    "colors": {
+      "frame": [248, 232, 238],
+      "frame_inactive": [249, 238, 242],
+      "frame_incognito": [232, 219, 226],
+      "frame_incognito_inactive": [241, 230, 236],
+      "toolbar": [249, 245, 246],
+      "tab_text": [107, 88, 96],
+      "tab_background_text": [156, 138, 146],
+      "bookmark_text": [107, 88, 96],
+      "ntp_background": [249, 245, 246],
+      "ntp_text": [107, 88, 96],
+      "ntp_link": [210, 138, 168],
+      "ntp_header": [107, 88, 96],
+      "button_background": [248, 232, 238],
+      "button_background_hover": [242, 206, 222],
+      "control_background": [248, 232, 238],
+      "toolbar_button_icon": [156, 138, 146],
+      "toolbar_button_icon_hover": [210, 138, 168],
+      "omnibox_background": [255, 255, 255],
+      "omnibox_text": [107, 88, 96],
+      "omnibox_border": [242, 190, 209],
+      "omnibox_focused_border": [242, 190, 209]
+    },
+    "tints": {
+      "buttons": [0.88, 0.50, 0.86],
+      "frame": [0.97, 0.64, 0.93],
+      "background_tab": [0.97, 0.74, 0.92]
+    },
+    "properties": {
+      "ntp_background_alignment": "top",
+      "ntp_background_repeat": "no-repeat",
+      "ntp_logo_alternate": 1
+    }
+  },
+  "icons": {
+    "128": "store-assets/icon.png"
+  }
+}

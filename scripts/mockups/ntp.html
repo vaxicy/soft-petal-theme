@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Soft Petal — New Tab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  /* ===== Soft Petal theme palette (sourced from theme.json) ===== */
+  :root {
+    --cream:        #F9F5F6;  /* toolbar / ntp background */
+    --blush:        #F8E8EE;  /* frame */
+    --petal:        #F2BED1;  /* accent / omnibox border */
+    --petal-deep:   #D28AA8;  /* hover / link */
+    --active-tab:   #FDCEDF;  /* active tab */
+    --text:         #6B5860;  /* primary text */
+    --sub:          #9C8A92;  /* secondary text */
+    --border:       #ECD9E1;
+    --white:        #FFFFFF;
+    --toolbar-h:    36px;
+    --tabs-h:       34px;
+    --bookmark-h:   32px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1280px;
+    height: 800px;
+    background:
+      radial-gradient(1200px 760px at 50% 45%, #FDF7F9 0%, #FAF3F6 55%, #F6E9EF 100%);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  /* ===== Chrome chrome (window frame) ===== */
+  .chrome { width: 100%; display: flex; flex-direction: column; }
+
+  /* ===== Tab strip ===== */
+  .tab-strip {
+    height: var(--tabs-h);
+    background: var(--blush);
+    display: flex;
+    align-items: flex-end;
+    padding: 4px 8px 0 8px;
+    gap: 2px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    height: var(--tabs-h);
+    min-width: 110px; max-width: 180px; flex: 0 1 160px;
+    border-radius: 8px 8px 0 0;
+    background: #F2E1EA;
+    color: var(--text);
+    font-size: 12px;
+    padding: 0 10px;
+    display: flex; align-items: center; gap: 6px;
+    position: relative; overflow: hidden;
+  }
+  .tab .favicon { width: 14px; height: 14px; border-radius: 4px; flex: 0 0 14px; background: var(--petal); }
+  .tab .favicon.t-red { background: #EA4335; }
+  .tab .favicon.t-yellow { background: #FBBC05; }
+  .tab .favicon.t-green { background: #34A853; }
+  .tab .favicon.t-purple { background: #A142F4; }
+  .tab .favicon.t-store { background: linear-gradient(135deg, #D28AA8 0%, #F2BED1 100%); }
+  .tab.active {
+    background: var(--cream);
+    color: var(--text);
+    font-weight: 500;
+    box-shadow: inset 0 2px 0 0 var(--petal);
+  }
+  .tab .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tab .close { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; color: var(--sub); font-size: 14px; line-height: 1; border-radius: 50%; }
+  .new-tab { width: 26px; height: 26px; margin-left: 4px; display: flex; align-items: center; justify-content: center; color: var(--sub); font-size: 18px; border-radius: 50%; }
+
+  /* ===== Toolbar (URL bar) ===== */
+  .toolbar {
+    height: var(--toolbar-h);
+    background: var(--cream);
+    display: flex; align-items: center;
+    padding: 0 12px; gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-btn { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: var(--sub); border-radius: 50%; }
+  .nav-btn svg { width: 16px; height: 16px; }
+  .nav-btn.active { color: var(--petal-deep); }
+  .omnibox {
+    flex: 1; height: 28px;
+    background: var(--white);
+    border: 1px solid var(--petal);
+    border-radius: 16px;
+    display: flex; align-items: center; padding: 0 14px; gap: 8px;
+    box-shadow: 0 1px 2px rgba(210, 138, 168, 0.08);
+  }
+  .omnibox .g { width: 14px; height: 14px; border-radius: 50%; background: conic-gradient(from 0deg, #4285F4 0 25%, #EA4335 25% 50%, #FBBC05 50% 75%, #34A853 75% 100%); flex: 0 0 14px; }
+  .omnibox .lock { width: 12px; height: 12px; color: var(--sub); flex: 0 0 12px; }
+  .omnibox .url { flex: 1; font-size: 13px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .omnibox .star { width: 14px; height: 14px; color: var(--sub); flex: 0 0 14px; }
+  .profile { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--petal) 0%, var(--petal-deep) 100%); color: var(--white); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+
+  /* ===== Bookmark bar ===== */
+  .bookmarks {
+    height: var(--bookmark-h);
+    background: var(--cream);
+    display: flex; align-items: center; padding: 0 14px; gap: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bm { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--text); }
+  .bm:hover { background: rgba(242, 190, 209, 0.35); }
+  .bm .b-fav { width: 12px; height: 12px; border-radius: 3px; flex: 0 0 12px; }
+  .bm .b-fav.b1 { background: #4285F4; }
+  .bm .b-fav.b2 { background: var(--petal); }
+  .bm .b-fav.b3 { background: #FBBC05; }
+  .bm .b-fav.b4 { background: #34A853; }
+  .bm .b-fav.b5 { background: #A142F4; }
+  .bm .b-fav.b6 { background: #EA4335; }
+  .bm .b-fav.b7 { background: #FF7043; }
+
+  /* ===== NTP body ===== */
+  .ntp-body { flex: 1; position: relative; padding-top: 96px; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+  .google-logo { font-family: 'Inter', sans-serif; font-size: 88px; font-weight: 500; letter-spacing: -2px; line-height: 1; margin-bottom: 36px; user-select: none; }
+  .google-logo .g1 { color: #4285F4; }
+  .google-logo .o1 { color: #EA4335; }
+  .google-logo .o2 { color: #FBBC05; }
+  .google-logo .g2 { color: #4285F4; }
+  .google-logo .l  { color: #34A853; }
+  .google-logo .e  { color: #EA4335; }
+  .search { width: 588px; height: 46px; background: var(--white); border: 1px solid #DADCE0; border-radius: 24px; display: flex; align-items: center; padding: 0 18px; gap: 12px; box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08); }
+  .search .icon { width: 18px; height: 18px; color: #5F6368; flex: 0 0 18px; }
+  .search .text { flex: 1; font-size: 14px; color: #202124; }
+  .search .mic { width: 18px; height: 18px; color: #5F6368; flex: 0 0 18px; }
+  .tiles { margin-top: 48px; display: grid; grid-template-columns: repeat(8, 80px); gap: 12px; }
+  .tile { width: 80px; height: 80px; border-radius: 18px; background: #F3E9EE; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; font-size: 12px; color: var(--text); }
+  .tile .dot { width: 26px; height: 26px; border-radius: 50%; background: var(--petal); }
+  .tile.add .plus { width: 28px; height: 28px; border-radius: 50%; background: #EDE0E6; color: #5F6368; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 300; line-height: 1; }
+</style>
+</head>
+<body>
+  <div class="chrome">
+    <div class="tab-strip">
+      <div class="tab"><span class="favicon t-store"></span><span class="label">Chrome Web Store</span><span class="close">×</span></div>
+      <div class="tab"><span class="favicon t-red"></span><span class="label">Product</span><span class="close">×</span></div>
+      <div class="tab active"><span class="favicon t-yellow"></span><span class="label">New Tab</span><span class="close">×</span></div>
+      <div class="new-tab">+</div>
+    </div>
+
+    <div class="toolbar">
+      <span class="nav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </span>
+      <span class="nav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </span>
+      <span class="nav-btn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
+      </span>
+      <div class="omnibox">
+        <span class="g"></span>
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="url">soft-petal.theme</span>
+        <svg class="star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
+      </div>
+      <span class="profile">L</span>
+    </div>
+
+    <div class="bookmarks">
+      <div class="bm"><span class="b-fav b1"></span>GitHub</div>
+      <div class="bm"><span class="b-fav b2"></span>Notion</div>
+      <div class="bm"><span class="b-fav b3"></span>Figma</div>
+      <div class="bm"><span class="b-fav b4"></span>YouTube</div>
+      <div class="bm"><span class="b-fav b5"></span>Gmail</div>
+      <div class="bm"><span class="b-fav b6"></span>Drive</div>
+      <div class="bm"><span class="b-fav b7"></span>Calendar</div>
+    </div>
+
+    <div class="ntp-body">
+      <div class="google-logo">
+        <span class="g1">G</span><span class="o1">o</span><span class="o2">o</span><span class="g2">g</span><span class="l">l</span><span class="e">e</span>
+      </div>
+      <div class="search" role="search" aria-label="Search">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <div class="text">Search Google or type a URL</div>
+        <svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="13" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="22"></line></svg>
+      </div>
+      <div class="tiles" aria-label="Shortcuts">
+        <div class="tile"><div class="dot"></div>Site 1</div>
+        <div class="tile"><div class="dot"></div>Site 2</div>
+        <div class="tile"><div class="dot"></div>Site 3</div>
+        <div class="tile"><div class="dot"></div>Site 4</div>
+        <div class="tile add"><div class="plus">+</div>Add</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

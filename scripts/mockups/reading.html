@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Soft Petal — Reading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  /* ===== Soft Petal theme palette (sourced from theme.json) ===== */
+  :root {
+    --cream:        #F9F5F6;
+    --blush:        #F8E8EE;
+    --petal:        #F2BED1;
+    --petal-deep:   #D28AA8;
+    --active-tab:   #FDCEDF;
+    --text:         #6B5860;
+    --sub:          #9C8A92;
+    --border:       #ECD9E1;
+    --white:        #FFFFFF;
+    --paper:        #FBF1F5;
+    --paper-edge:   #F0DDE6;
+    --toolbar-h:    36px;
+    --tabs-h:       34px;
+    --bookmark-h:   32px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1280px;
+    height: 800px;
+    background:
+      radial-gradient(1200px 800px at 50% 30%, #FDF7F9 0%, #FAF3F6 60%, #F6E9EF 100%);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  .chrome { width: 100%; display: flex; flex-direction: column; }
+
+  .tab-strip {
+    height: var(--tabs-h);
+    background: var(--blush);
+    display: flex; align-items: flex-end;
+    padding: 4px 8px 0 8px; gap: 2px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    height: var(--tabs-h);
+    min-width: 110px; max-width: 180px; flex: 0 1 160px;
+    border-radius: 8px 8px 0 0;
+    background: #F2E1EA;
+    color: var(--text);
+    font-size: 12px;
+    padding: 0 10px;
+    display: flex; align-items: center; gap: 6px;
+    position: relative; overflow: hidden;
+  }
+  .tab .favicon { width: 14px; height: 14px; border-radius: 4px; flex: 0 0 14px; background: var(--petal); }
+  .tab .favicon.t-red { background: #EA4335; }
+  .tab .favicon.t-blue { background: #4285F4; }
+  .tab .favicon.t-paper { background: linear-gradient(135deg, var(--petal) 0%, var(--cream) 100%); }
+  .tab.active { background: var(--cream); color: var(--text); font-weight: 500; box-shadow: inset 0 2px 0 0 var(--petal); }
+  .tab .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tab .close { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; color: var(--sub); font-size: 14px; line-height: 1; border-radius: 50%; }
+  .new-tab { width: 26px; height: 26px; margin-left: 4px; display: flex; align-items: center; justify-content: center; color: var(--sub); font-size: 18px; border-radius: 50%; }
+
+  .toolbar {
+    height: var(--toolbar-h);
+    background: var(--cream);
+    display: flex; align-items: center;
+    padding: 0 12px; gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-btn { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: var(--sub); border-radius: 50%; }
+  .nav-btn svg { width: 16px; height: 16px; }
+  .nav-btn.disabled { color: #C7B7B7; }
+  .nav-btn.active { color: var(--petal-deep); }
+  .omnibox {
+    flex: 1; height: 28px;
+    background: var(--white);
+    border: 1px solid var(--petal);
+    border-radius: 16px;
+    display: flex; align-items: center; padding: 0 14px; gap: 8px;
+    box-shadow: 0 1px 2px rgba(210, 138, 168, 0.08);
+  }
+  .omnibox .g { width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, var(--petal) 0%, var(--petal-deep) 100%); flex: 0 0 14px; }
+  .omnibox .lock { width: 12px; height: 12px; color: var(--sub); flex: 0 0 12px; }
+  .omnibox .url { flex: 1; font-size: 13px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .omnibox .star { width: 14px; height: 14px; color: var(--petal-deep); flex: 0 0 14px; }
+  .profile { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--petal) 0%, var(--petal-deep) 100%); color: var(--white); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+
+  .bookmarks {
+    height: var(--bookmark-h);
+    background: var(--cream);
+    display: flex; align-items: center; padding: 0 14px; gap: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bm { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--text); }
+  .bm:hover { background: rgba(242, 190, 209, 0.35); }
+  .bm .b-fav { width: 12px; height: 12px; border-radius: 3px; flex: 0 0 12px; }
+  .bm .b-fav.b1 { background: var(--petal-deep); }
+  .bm .b-fav.b2 { background: var(--petal); }
+  .bm .b-fav.b3 { background: #FBBC05; }
+  .bm .b-fav.b4 { background: #34A853; }
+  .bm .b-fav.b5 { background: #A142F4; }
+  .bm .b-fav.b6 { background: #EA4335; }
+  .bm .b-fav.b7 { background: #FF7043; }
+
+  .body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    column-gap: 36px;
+    padding: 56px 80px 0 80px;
+    align-items: start;
+  }
+  .article {
+    background: var(--paper);
+    border: 1px solid var(--paper-edge);
+    border-radius: 10px 10px 0 0;
+    padding: 36px 44px 30px;
+    position: relative;
+    box-shadow: 0 6px 18px rgba(210, 138, 168, 0.06);
+  }
+  .article::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 22px; height: 22px;
+    background: linear-gradient(225deg, var(--cream) 0%, var(--cream) 50%, transparent 50%);
+  }
+  .eyebrow { color: var(--petal-deep); font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 14px; }
+  .article h1 { font-family: 'Lora', Georgia, serif; font-size: 40px; line-height: 1.18; font-weight: 500; color: var(--text); margin: 0 0 10px; }
+  .meta { color: var(--sub); font-size: 13px; margin-bottom: 28px; }
+  .article p { font-size: 16px; line-height: 1.7; color: #52454C; margin: 0 0 16px; }
+  .article p:last-child { margin-bottom: 0; }
+
+  .note {
+    background: var(--white);
+    border: 1.5px solid var(--petal);
+    border-radius: 16px;
+    padding: 22px 22px 18px;
+    align-self: start;
+    margin-top: 28px;
+  }
+  .note h3 { font-size: 15px; font-weight: 700; color: var(--text); margin: 0 0 14px; }
+  .note ul { list-style: none; margin: 0; padding: 0; }
+  .note li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--sub); margin-bottom: 9px; }
+  .note li:last-child { margin-bottom: 0; }
+  .note li::before { content: ''; display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--petal); flex: 0 0 7px; }
+</style>
+</head>
+<body>
+  <div class="chrome">
+    <div class="tab-strip">
+      <div class="tab"><span class="favicon t-red"></span><span class="label">Chrome Web Store</span></div>
+      <div class="tab"><span class="favicon t-blue"></span><span class="label">A Soft Place to Begin</span></div>
+      <div class="tab active"><span class="favicon t-paper"></span><span class="label">The Quiet Hour</span><span class="close">×</span></div>
+      <div class="new-tab">+</div>
+    </div>
+
+    <div class="toolbar">
+      <span class="nav-btn disabled">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </span>
+      <span class="nav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </span>
+      <span class="nav-btn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
+      </span>
+      <div class="omnibox">
+        <span class="g"></span>
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="url">soft-petal-reading.com/article/the-quiet-hour</span>
+        <svg class="star" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
+      </div>
+      <span class="profile">L</span>
+    </div>
+
+    <div class="bookmarks">
+      <div class="bm"><span class="b-fav b1"></span>Substack</div>
+      <div class="bm"><span class="b-fav b2"></span>Notion</div>
+      <div class="bm"><span class="b-fav b3"></span>Pocket</div>
+      <div class="bm"><span class="b-fav b4"></span>Are.na</div>
+      <div class="bm"><span class="b-fav b5"></span>Medium</div>
+      <div class="bm"><span class="b-fav b6"></span>Gmail</div>
+      <div class="bm"><span class="b-fav b7"></span>Drive</div>
+    </div>
+
+    <div class="body">
+      <article class="article">
+        <div class="eyebrow">MORNING JOURNAL</div>
+        <h1>The Quiet Hour</h1>
+        <div class="meta">Morning reflections · 4 min read</div>
+        <p>There is a particular stillness that arrives before the day asks anything of you. The light is soft, the air unhurried, and the page in front of you feels less like a screen and more like warm paper. Soft Petal was built for exactly this hour — a theme that never shouts, only settles.</p>
+        <p>Reading here is easy on the eyes. The cream background holds the text gently, the petal accents mark where you are without breaking the calm, and the muted browns keep every word legible. It is a small thing, perhaps, but small things are what make a routine feel kind.</p>
+        <p>Open your tabs, brew something warm, and let the browser breathe with you.</p>
+      </article>
+
+      <aside class="note">
+        <h3>Why readers love it</h3>
+        <ul>
+          <li>Calm cream for long reads</li>
+          <li>Gentle petal accents</li>
+          <li>Easy on the eyes</li>
+          <li>Pairs with serif fonts</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
