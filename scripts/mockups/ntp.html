@@ -121,20 +121,21 @@
   /* ===== NTP body ===== */
   .ntp-body { flex: 1; position: relative; padding-top: 96px; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
   .google-logo { font-family: 'Inter', sans-serif; font-size: 88px; font-weight: 500; letter-spacing: -2px; line-height: 1; margin-bottom: 36px; user-select: none; }
-  .google-logo .g1 { color: #4285F4; }
-  .google-logo .o1 { color: #EA4335; }
-  .google-logo .o2 { color: #FBBC05; }
-  .google-logo .g2 { color: #4285F4; }
-  .google-logo .l  { color: #34A853; }
-  .google-logo .e  { color: #EA4335; }
+  /* manifest sets ntp_logo_alternate: 1, so Chrome draws the mark in ONE tint
+     derived from the palette — the mockup must show that, not the full-colour logo */
+  .google-logo .g1, .google-logo .o1, .google-logo .o2,
+  .google-logo .g2, .google-logo .l, .google-logo .e { color: #CE8FAA; }
   .search { width: 588px; height: 46px; background: var(--white); border: 1px solid #DADCE0; border-radius: 24px; display: flex; align-items: center; padding: 0 18px; gap: 12px; box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08); }
   .search .icon { width: 18px; height: 18px; color: #5F6368; flex: 0 0 18px; }
   .search .text { flex: 1; font-size: 14px; color: #202124; }
   .search .mic { width: 18px; height: 18px; color: #5F6368; flex: 0 0 18px; }
-  .tiles { margin-top: 48px; display: grid; grid-template-columns: repeat(8, 80px); gap: 12px; }
-  .tile { width: 80px; height: 80px; border-radius: 18px; background: #F3E9EE; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; font-size: 12px; color: var(--text); }
-  .tile .dot { width: 26px; height: 26px; border-radius: 50%; background: var(--petal); }
-  .tile.add .plus { width: 28px; height: 28px; border-radius: 50%; background: #EDE0E6; color: #5F6368; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 300; line-height: 1; }
+  /* shortcuts — Chrome draws a circular icon with the label underneath,
+     not a filled tile (store review: the old mockup looked unlike the real NTP) */
+  .tiles { margin-top: 44px; display: flex; align-items: flex-start; gap: 36px; }
+  .tile { width: 76px; display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; font-size: 12px; color: var(--text); }
+  .tile .dot { width: 48px; height: 48px; border-radius: 50%; background: #EFE2E8; position: relative; }
+  .tile .dot::after { content: ""; position: absolute; inset: 13px; border-radius: 50%; background: var(--petal); }
+  .tile.add .plus { width: 48px; height: 48px; border-radius: 50%; background: #EFE2E8; color: #5F6368; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 300; line-height: 1; }
 </style>
 </head>
 <body>
@@ -185,10 +186,10 @@
         <svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="13" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="22"></line></svg>
       </div>
       <div class="tiles" aria-label="Shortcuts">
-        <div class="tile"><div class="dot"></div>Site 1</div>
-        <div class="tile"><div class="dot"></div>Site 2</div>
-        <div class="tile"><div class="dot"></div>Site 3</div>
-        <div class="tile"><div class="dot"></div>Site 4</div>
+        <div class="tile"><div class="dot"></div>Notion</div>
+        <div class="tile"><div class="dot"></div>GitHub</div>
+        <div class="tile"><div class="dot"></div>Figma</div>
+        <div class="tile"><div class="dot"></div>YouTube</div>
         <div class="tile add"><div class="plus">+</div>Add</div>
       </div>
     </div>

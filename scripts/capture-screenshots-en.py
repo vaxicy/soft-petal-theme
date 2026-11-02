@@ -29,7 +29,11 @@ def shoot(page, html_path: Path, out_path: Path):
 
 def main():
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        try:
+            browser = p.chromium.launch()
+        except Exception:
+            # bundled headless shell may be missing after a Playwright update
+            browser = p.chromium.launch(channel="chrome")
         context = browser.new_context(
             viewport={"width": W, "height": H},
             device_scale_factor=1,
