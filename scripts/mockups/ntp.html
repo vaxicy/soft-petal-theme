@@ -124,18 +124,23 @@
   /* manifest sets ntp_logo_alternate: 1, so Chrome draws the mark in ONE tint
      derived from the palette — the mockup must show that, not the full-colour logo */
   .google-logo .g1, .google-logo .o1, .google-logo .o2,
-  .google-logo .g2, .google-logo .l, .google-logo .e { color: #CE8FAA; }
+  .google-logo .g2, .google-logo .l, .google-logo .e { color: #C198A3; }
   .search { width: 588px; height: 46px; background: var(--white); border: 1px solid #DADCE0; border-radius: 24px; display: flex; align-items: center; padding: 0 18px; gap: 12px; box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08); }
   .search .icon { width: 18px; height: 18px; color: #5F6368; flex: 0 0 18px; }
   .search .text { flex: 1; font-size: 14px; color: #202124; }
   .search .mic { width: 18px; height: 18px; color: #5F6368; flex: 0 0 18px; }
   /* shortcuts — Chrome draws a circular icon with the label underneath,
      not a filled tile (store review: the old mockup looked unlike the real NTP) */
-  .tiles { margin-top: 44px; display: flex; align-items: flex-start; gap: 36px; }
+  /* two AI suggestion pills under the search bar — the real 2026 NTP has them */
+  .ai-row { margin-top: 20px; display: flex; gap: 14px; }
+  .ai-pill { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 20px; border-radius: 10px; background: #3C4043; color: #E8EAED; font-size: 13px; }
+  .ai-pill .ico { width: 16px; height: 16px; border-radius: 4px; background: #9AA0A6; opacity: .85; }
+
+  .tiles { margin-top: 30px; display: flex; align-items: flex-start; gap: 36px; }
   .tile { width: 76px; display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; font-size: 12px; color: var(--text); }
-  .tile .dot { width: 48px; height: 48px; border-radius: 50%; background: #EFE2E8; position: relative; }
-  .tile .dot::after { content: ""; position: absolute; inset: 13px; border-radius: 50%; background: var(--petal); }
-  .tile.add .plus { width: 48px; height: 48px; border-radius: 50%; background: #EFE2E8; color: #5F6368; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 300; line-height: 1; }
+  .tile .dot { width: 48px; height: 48px; border-radius: 50%; background: #D4B7BE; position: relative; }
+  .tile .dot::after { content: ""; position: absolute; inset: 13px; border-radius: 50%; background: #F7EEF0; }
+  .tile.add .plus { width: 48px; height: 48px; border-radius: 50%; background: #D4B7BE; color: #4A2E36; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 300; line-height: 1; }
 </style>
 </head>
 <body>
@@ -184,6 +189,10 @@
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <div class="text">Search Google or type a URL</div>
         <svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="13" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="22"></line></svg>
+      </div>
+      <div class="ai-row" aria-label="AI suggestions">
+        <div class="ai-pill"><span class="ico"></span>Open AI Mode</div>
+        <div class="ai-pill"><span class="ico"></span>Generate images</div>
       </div>
       <div class="tiles" aria-label="Shortcuts">
         <div class="tile"><div class="dot"></div>Notion</div>
